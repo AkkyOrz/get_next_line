@@ -19,5 +19,4 @@ char *ft_strdup(const char *s);
 char *ft_strchr(const char *s, int c);
 size_t ft_strlcpy(char *dst, const char *src, size_t size);
 char *get_next_line(int fd);
-char *get_line_from_memo(char **memo, const char *tail_ptr);
 #endif

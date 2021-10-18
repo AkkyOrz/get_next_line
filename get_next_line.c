@@ -2,15 +2,53 @@
 #include <errno.h>
 #include <stdio.h>
 
-char *get_line_from_memo(char **memo, const char *tail_ptr)
+static char *get_line_from_memo(char **memo, const char *tail_ptr);
+static void ft_strmerge(char **s1, char *s2);
+
+char *get_next_line(int fd)
+{
+	static char *memo[FD_SIZE] = {NULL};
+	char *buf;
+	ssize_t read_size;
+	char *next_line_ptr;
+
+	next_line_ptr = NULL;
+	if (memo[fd] != NULL)
+		next_line_ptr = ft_strchr(memo[fd], '\n');
+	if (next_line_ptr != NULL && memo[fd] != NULL)
+		return (get_line_from_memo(&memo[fd], next_line_ptr));
+	while (1)
+	{
+		buf = malloc(sizeof(char) * (BUFFER_SIZE + 1LL));
+		read_size = read(fd, buf, BUFFER_SIZE);
+		if (read_size < 0)
+		{
+			free(buf);
+			return (NULL);
+		}
+		buf[read_size] = '\0';
+		if (read_size == 0)
+		{
+			free(buf);
+			return (get_line_from_memo(&memo[fd], memo[fd] + ft_strlen(memo[fd])));
+		}
+		ft_strmerge(&memo[fd], buf);
+		next_line_ptr = ft_strchr(memo[fd], '\n');
+		if (next_line_ptr != NULL)
+			return (get_line_from_memo(&memo[fd], next_line_ptr));
+	}
+	return (NULL);
+}
+
+static char *get_line_from_memo(char **memo, const char *tail_ptr)
 {
 	char *new_line;
 	char *second_line;
 
 	if (*memo == NULL)
 		return (NULL);
-	new_line = ft_substr(*memo, 0, tail_ptr - *memo + 1); //!!!
-	second_line = ft_substr(tail_ptr, 1, SIZE_MAX / 4LL); //!!!
+	new_line = ft_substr(*memo, 0, tail_ptr - *memo + 1);
+	second_line = ft_substr(tail_ptr, 1, SIZE_MAX / 4LL);
 	free(*memo);
 	*memo = NULL;
 	if (second_line == NULL || second_line[0] == '\0')
@@ -23,47 +61,15 @@ char *get_line_from_memo(char **memo, const char *tail_ptr)
 	return (new_line);
 }
 
-char *get_next_line(int fd)
+static void ft_strmerge(char **s1, char *s2)
 {
-	static char *memo[FD_SIZE] = {NULL};
-	char *buf;
-	ssize_t read_size;
-	char *next_line_ptr;
-	char *tmp;
+	char *merged_str;
 
-	next_line_ptr = NULL;
-	if (memo[fd] != NULL)
-		next_line_ptr = ft_strchr(memo[fd], '\n');
-	if (next_line_ptr != NULL && memo[fd] != NULL)
-		return (get_line_from_memo(&memo[fd], next_line_ptr));
-	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1LL));
-	while (1)
-	{
-		read_size = read(fd, buf, BUFFER_SIZE);
-		if (read_size < 0)
-		{
-			free(buf);
-			return (NULL);
-		}
-		buf[read_size] = '\0';
-		if (read_size == 0)
-		{
-			next_line_ptr = memo[fd] + ft_strlen(memo[fd]);
-			free(buf);
-			return (get_line_from_memo(&memo[fd], next_line_ptr));
-		}
-		tmp = ft_strjoin(memo[fd], buf);
-		free(memo[fd]);
-		memo[fd] = tmp;
-		next_line_ptr = ft_strchr(memo[fd], '\n');
-		if (next_line_ptr != NULL)
-		{
-			free(buf);
-			return (get_line_from_memo(&memo[fd], next_line_ptr));
-		}
-	}
-	free(buf);
-	return (NULL);
+	merged_str = ft_strjoin(*s1, s2);
+	free(*s1);
+	free(s2);
+	*s1 = merged_str;
+	return;
 }
 
 size_t ft_strlcpy(char *dst, const char *src, size_t size)
