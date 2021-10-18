@@ -25,12 +25,13 @@ char *get_line_from_memo(char **memo, const char *tail_ptr)
 
 char *get_next_line(int fd)
 {
-	static char *memo[FD_SIZE];
+	static char *memo[FD_SIZE] = {NULL};
 	char *buf;
 	ssize_t read_size;
 	char *next_line_ptr;
 	char *tmp;
 
+	next_line_ptr = NULL;
 	if (memo[fd] != NULL)
 		next_line_ptr = ft_strchr(memo[fd], '\n');
 	if (next_line_ptr != NULL && memo[fd] != NULL)
