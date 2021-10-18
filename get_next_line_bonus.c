@@ -6,11 +6,12 @@
 /*   By: akito <akito@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 20:58:53 by akito             #+#    #+#             */
-/*   Updated: 2021/10/18 21:00:45 by akito            ###   ########.fr       */
+/*   Updated: 2021/10/18 21:03:04 by akito            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
+
 
 static char	*get_line_from_memo(char **memo, const char *tail_ptr);
 static void	ft_strmerge(char **s1, char *s2);
@@ -21,7 +22,7 @@ char	*get_next_line(int fd)
 	char		*buf;
 	ssize_t		read_size;
 
-	if (ft_strchr(memo[fd], '\n') != NULL && memo[fd] != NULL)
+	if (memo[fd] != NULL && ft_strchr(memo[fd], '\n') != NULL )
 		return (get_line_from_memo(&memo[fd], ft_strchr(memo[fd], '\n')));
 	while (1)
 	{
