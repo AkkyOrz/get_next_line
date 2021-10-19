@@ -6,7 +6,7 @@
 /*   By: akito <akito@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 20:58:53 by akito             #+#    #+#             */
-/*   Updated: 2021/10/19 14:26:04 by akito            ###   ########.fr       */
+/*   Updated: 2021/10/19 14:30:58 by akito            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ char	*get_next_line(int fd)
 		if (read_size <= 0)
 		{
 			free(buf);
-			return (get_line_from_memo(&memo[fd], memo[fd]
-					+ ft_strlen(memo[fd])));
+			if (read_size == 0)
+				return (get_line_from_memo(&memo[fd], memo[fd]
+						+ ft_strlen(memo[fd])));
+			return (NULL);
 		}
 		buf[read_size] = '\0';
 		ft_strmerge(&memo[fd], buf);
