@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akito <akito@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 20:58:53 by akito             #+#    #+#             */
-/*   Updated: 2021/10/18 21:03:04 by akito            ###   ########.fr       */
+/*   Updated: 2021/10/19 14:26:04 by akito            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 
 static char	*get_line_from_memo(char **memo, const char *tail_ptr);
 static void	ft_strmerge(char **s1, char *s2);
@@ -46,7 +45,7 @@ static char	*get_line_from_memo(char **memo, const char *tail_ptr)
 	char	*new_line;
 	char	*second_line;
 
-	if (*memo == NULL)
+	if (*memo == NULL || tail_ptr == NULL)
 		return (NULL);
 	new_line = ft_substr(*memo, 0, tail_ptr - *memo + 1);
 	second_line = ft_substr(tail_ptr, 1, SIZE_MAX / 4LL);
