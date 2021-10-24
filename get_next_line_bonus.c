@@ -6,14 +6,14 @@
 /*   By: akito <akito@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 20:58:53 by akito             #+#    #+#             */
-/*   Updated: 2021/10/24 12:18:12 by akito            ###   ########.fr       */
+/*   Updated: 2021/10/24 16:04:13 by akito            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-static char	*get_line_from_memo(char **memo, const char *tail_ptr);
-static void	ft_strmerge(char **s1, char *s2);
+static char	*gnl_from_memo(char **memo, const char *tail_ptr);
+static char	*ft_strmerge(char **s1, char *s2);
 
 char	*get_next_line(int fd)
 {
@@ -21,8 +21,10 @@ char	*get_next_line(int fd)
 	char		*buf;
 	ssize_t		read_size;
 
-	if (memo[fd] != NULL && ft_strchr(memo[fd], '\n') != NULL )
-		return (get_line_from_memo(&memo[fd], ft_strchr(memo[fd], '\n')));
+	if (fd < 0 || FD_SIZE < fd)
+		return (NULL);
+	if (memo[fd] != NULL && ft_strchr(memo[fd], '\n') != NULL)
+		return (gnl_from_memo(&memo[fd], ft_strchr(memo[fd], '\n')));
 	while (1)
 	{
 		buf = malloc(sizeof(char) * (BUFFER_SIZE + 1LL));
@@ -32,19 +34,17 @@ char	*get_next_line(int fd)
 		if (read_size <= 0)
 		{
 			free(buf);
-			if (read_size == 0)
-				return (get_line_from_memo(&memo[fd], memo[fd]
-						+ ft_strlen(memo[fd])));
-			return (NULL);
+			return (gnl_from_memo(&memo[fd], memo[fd] + ft_strlen(memo[fd])));
 		}
 		buf[read_size] = '\0';
-		ft_strmerge(&memo[fd], buf);
+		if (ft_strmerge(&memo[fd], buf) == NULL)
+			return (NULL);
 		if (ft_strchr(memo[fd], '\n') != NULL)
-			return (get_line_from_memo(&memo[fd], ft_strchr(memo[fd], '\n')));
+			return (gnl_from_memo(&memo[fd], ft_strchr(memo[fd], '\n')));
 	}
 }
 
-static char	*get_line_from_memo(char **memo, const char *tail_ptr)
+static char	*gnl_from_memo(char **memo, const char *tail_ptr)
 {
 	char	*new_line;
 	char	*second_line;
@@ -65,7 +65,7 @@ static char	*get_line_from_memo(char **memo, const char *tail_ptr)
 	return (new_line);
 }
 
-static void	ft_strmerge(char **s1, char *s2)
+static char	*ft_strmerge(char **s1, char *s2)
 {
 	char	*merged_str;
 
@@ -73,7 +73,7 @@ static void	ft_strmerge(char **s1, char *s2)
 	free(*s1);
 	free(s2);
 	*s1 = merged_str;
-	return ;
+	return (*s1);
 }
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
