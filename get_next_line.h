@@ -6,20 +6,19 @@
 /*   By: akito <akito@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 20:59:01 by akito             #+#    #+#             */
-/*   Updated: 2021/10/18 20:59:02 by akito            ###   ########.fr       */
+/*   Updated: 2021/10/24 12:19:12 by akito            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
 # include <errno.h>
+# include <fcntl.h>
+# include <stdint.h>
+# include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include <stdint.h>
 
 # define FD_SIZE 65536
 

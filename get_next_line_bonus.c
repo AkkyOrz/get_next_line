@@ -6,7 +6,7 @@
 /*   By: akito <akito@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 20:58:53 by akito             #+#    #+#             */
-/*   Updated: 2021/10/19 15:45:51 by akito            ###   ########.fr       */
+/*   Updated: 2021/10/24 12:18:12 by akito            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	*get_next_line(int fd)
 	while (1)
 	{
 		buf = malloc(sizeof(char) * (BUFFER_SIZE + 1LL));
+		if (buf == NULL)
+			return (NULL);
 		read_size = read(fd, buf, BUFFER_SIZE);
 		if (read_size <= 0)
 		{
