@@ -6,7 +6,7 @@
 /*   By: akito <akito@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 20:58:53 by akito             #+#    #+#             */
-/*   Updated: 2021/10/24 16:04:13 by akito            ###   ########.fr       */
+/*   Updated: 2021/10/26 13:03:11 by akito            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*get_next_line(int fd)
 	char		*buf;
 	ssize_t		read_size;
 
-	if (fd < 0 || FD_SIZE < fd)
+	if (fd < 0 || FD_SIZE <= fd)
 		return (NULL);
 	if (memo[fd] != NULL && ft_strchr(memo[fd], '\n') != NULL)
 		return (gnl_from_memo(&memo[fd], ft_strchr(memo[fd], '\n')));
